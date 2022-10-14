@@ -3,8 +3,8 @@ import { Chart } from 'chart.js/auto';
 import { FETCH_DATA_BTC_USDT } from '../const';
 import { useEffect, useState } from 'react';
 import { options } from '../config/options';
-import './BarChart.scss';
 import { plugins } from '../config/plugin';
+import './BarChart.scss';
 
 export const BarChart = () => {
   const [data, setData] = useState();
