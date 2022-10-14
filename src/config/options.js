@@ -1,8 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import * as ReactDOM from 'react-dom';
 import TooltipComponent from '../components/TooltipComponent';
 
 export const options = {
+  interaction: {
+    intersect: false,
+    mode: 'index',
+  },
   scales: {
     x: {
       grid: {
@@ -39,7 +44,6 @@ export const options = {
       enabled: false,
 
       external: function (context) {
-        console.log(this);
         let tooltipEl = document.querySelector('.chartjs-tooltip');
         const barChartContainer = document.querySelector('.bar-chart');
         // Create element on first render
@@ -50,22 +54,21 @@ export const options = {
         }
         const tooltipModel = context.tooltip;
         if (tooltipModel.body) {
+          const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines);
           const titleLines = tooltipModel.title || [];
           titleLines.forEach((line, index) => {
-            titleLines[index] = new Date(line).toLocaleDateString();
+            if (new Date(line) !== 'Invalid Date' && !isNaN(new Date(line))) {
+              titleLines[index] = new Date(line).toLocaleDateString();
+            } else {
+              titleLines[index] = '';
+              bodyLines[index] = '';
+            }
           });
-          const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines);
-          createRoot(tooltipEl).render(
-            <TooltipComponent titleLines={titleLines} bodyLines={bodyLines} />
+          ReactDOM.render(
+            <TooltipComponent titleLines={titleLines} bodyLines={bodyLines} />,
+            tooltipEl
           );
         }
-
-        // Display, position, and set styles for font
-        tooltipEl.getBoundingClientRect();
-        console.log(tooltipEl.getBoundingClientRect());
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.style.left = '0';
-        tooltipEl.style.top = '0';
       },
     },
   },

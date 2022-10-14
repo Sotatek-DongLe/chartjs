@@ -4,6 +4,7 @@ import { FETCH_DATA_BTC_USDT } from '../const';
 import { useEffect, useState } from 'react';
 import { options } from '../config/options';
 import './BarChart.scss';
+import { plugins } from '../config/plugin';
 
 export const BarChart = () => {
   const [data, setData] = useState();
@@ -29,7 +30,7 @@ export const BarChart = () => {
 
   return (
     <div className="bar-chart">
-      {data && <Bar data={data} options={options} />}
+      {data && <Bar data={data} options={options} plugins={plugins} />}
     </div>
   );
 };
